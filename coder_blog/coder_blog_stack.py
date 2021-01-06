@@ -37,17 +37,19 @@ class CoderBlogStack(core.Stack):
             iam.ManagedPolicy.from_aws_managed_policy_name("SecretsManagerReadWrite"))
 
         # Instance Type
-        host = ec2.Instance(self, "Workstation",
-                            instance_type=ec2.InstanceType("t4g.large"),
-                            machine_image=amzn_linux,
-                            block_devices=[ec2.BlockDevice(
-                                device_name="/dev/xvda",
-                                volume=ec2.BlockDeviceVolume.ebs(
-                                    volume_size=128)
-                            )],
-                            vpc=vpc,
-                            role=role
-                            )
+        host = ec2.Instance(
+            self,
+            "Workstation",
+            instance_type=ec2.InstanceType("t4g.large"),
+            machine_image=amzn_linux,
+            block_devices=[ec2.BlockDevice(
+                device_name="/dev/xvda",
+                volume=ec2.BlockDeviceVolume.ebs(
+                    volume_size=128)
+            )],
+            vpc=vpc,
+            role=role
+        )
 
         host.connections.allow_internally
 
@@ -59,8 +61,9 @@ class CoderBlogStack(core.Stack):
         alb = elbv2.ApplicationLoadBalancer(
             self, "ALB", vpc=vpc, internet_facing=False)
         alb_listener = alb.add_listener(
+            "ALBListener",
             port=443,
-            open=true
+            open=True
         )
 
         alb_listener.add_targets("CodeServerInstance",
@@ -70,11 +73,12 @@ class CoderBlogStack(core.Stack):
         # AGA Configuration
 
         accelerator = ga.Accelerator(self, "Accelerator")
-        ga_listener = ga.Listener(self, "Listener",
-                                  accelerator=accelerator,
-                                  port_ranges=[ga.PortRange(
-                                      from_port=443, to_port=443)]
-                                  )
+        ga_listener = ga.Listener(
+            self, "Listener",
+            accelerator=accelerator,
+            port_ranges=[ga.PortRange(
+                from_port=443, to_port=443)]
+        )
         endpoint_group = ga.EndpointGroup(
             self, "MainGroup", listener=ga_listener)
         endpoint_group.add_load_balancer("AlbEndpoint", alb)
