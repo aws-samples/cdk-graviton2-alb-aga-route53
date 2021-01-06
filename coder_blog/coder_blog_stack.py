@@ -2,14 +2,15 @@ from aws_cdk import (
     aws_ec2 as ec2,
     aws_iam as iam,
     aws_globalaccelerator as ga,
-    aws_elasticloadbalancingv2 as alb,
+    aws_elasticloadbalancingv2 as elbv2,
     core
 )
+
 
 class CoderBlogStack(core.Stack):
 
     def availability_zones(self):
-        return ['us-east-2b', 'us-east-2c']
+        return ['us-east-2b']
 
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -52,19 +53,31 @@ class CoderBlogStack(core.Stack):
 
         print(f"Created new EC2 Instance {host.instance_id}")
         # Certs Manager
+        # TODO
 
-        # AGA with LB
-        alb = alb.ApplicationLoadBalancer(stack, "ALB", vpc=vpc, internet_facing=False)
-        accelerator = ga.Accelerator(stack, "Accelerator")
-        listener = ga.Listener(self, "Listener",
-            accelerator=accelerator,
-            port_ranges=[{
-                "from_port": 443,
-                "to_port": 443
-            }
-            ]
+        # ALB Configuration
+        alb = elbv2.ApplicationLoadBalancer(
+            self, "ALB", vpc=vpc, internet_facing=False)
+        alb_listener = alb.add_listener(
+            port=443,
+            open=true
         )
-        endpoint_group = ga.EndpointGroup(self, "MainGroup", listener=listener)
+
+        alb_listener.add_targets("CodeServerInstance",
+                                 port=5555, targets=[host])
+        # TODO - add certificate
+
+        # AGA Configuration
+
+        accelerator = ga.Accelerator(self, "Accelerator")
+        ga_listener = ga.Listener(self, "Listener",
+                                  accelerator=accelerator,
+                                  port_ranges=[ga.PortRange(
+                                      from_port=443, to_port=443)]
+                                  )
+        endpoint_group = ga.EndpointGroup(
+            self, "MainGroup", listener=ga_listener)
         endpoint_group.add_load_balancer("AlbEndpoint", alb)
-        aga_sg = ga.AcceleratorSecurityGroup.from_vpc(stack, "GlobalAcceleratorSG", vpc)
-        alb.connections.allow_from(aga_sg, Port.tcp(443))
+        aga_sg = ga.AcceleratorSecurityGroup.from_vpc(
+            self, "GlobalAcceleratorSG", vpc, endpoint_group)
+        alb.connections.allow_from(aga_sg, ec2.Port.tcp(443))
