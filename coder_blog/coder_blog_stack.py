@@ -6,8 +6,10 @@ from aws_cdk import (
     core
 )
 
-
 class CoderBlogStack(core.Stack):
+
+    def availability_zones(self):
+        return ['us-east-2b', 'us-east-2c']
 
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -52,6 +54,17 @@ class CoderBlogStack(core.Stack):
         # Certs Manager
 
         # AGA with LB
-
-    def availabilityZones(self):
-        return ['us-east-2b', 'us-east-2c']
+        alb = alb.ApplicationLoadBalancer(stack, "ALB", vpc=vpc, internet_facing=False)
+        accelerator = ga.Accelerator(stack, "Accelerator")
+        listener = ga.Listener(self, "Listener",
+            accelerator=accelerator,
+            port_ranges=[{
+                "from_port": 443,
+                "to_port": 443
+            }
+            ]
+        )
+        endpoint_group = ga.EndpointGroup(self, "MainGroup", listener=listener)
+        endpoint_group.add_load_balancer("AlbEndpoint", alb)
+        aga_sg = ga.AcceleratorSecurityGroup.from_vpc(stack, "GlobalAcceleratorSG", vpc)
+        alb.connections.allow_from(aga_sg, Port.tcp(443))

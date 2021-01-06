@@ -6,6 +6,7 @@ from coder_blog.coder_blog_stack import CoderBlogStack
 
 
 app = core.App()
-CoderBlogStack(app, "coder-blog")
+ohio_env =core.Environment(region="us-east-2")
+CoderBlogStack(app, "coder-blog", env=ohio_env)
 
 app.synth()
