@@ -26,5 +26,10 @@ class ALBStack(core.Stack):
 
         self.alb.connections.allow_to(instance, ec2.Port.tcp(8080))
 
+        self.alb.add_redirect(source_port=80, source_protocol=elbv2.Protocol.HTTP,
+                              target_port=443, target_protocol=elbv2.Protocol.HTTPS)
+
+        self.alb.connections.allow_from_any_ipv4(ec2.Port.tcp(80))
+
         core.CfnOutput(self, "Output",
                        value=self.alb.load_balancer_arn)

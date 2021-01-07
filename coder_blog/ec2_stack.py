@@ -40,4 +40,4 @@ class EC2Stack(core.Stack):
         )
 
         core.CfnOutput(self, "Output",
-                value=self.instance.instance_id)
+                       value=self.instance.instance_id)

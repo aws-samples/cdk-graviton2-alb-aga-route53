@@ -13,9 +13,11 @@ deploy_env = core.Environment(
     account=os.environ["CDK_DEFAULT_ACCOUNT"],
     region=os.environ["CDK_DEFAULT_REGION"])
 
+CIDR = os.getenv("VPC_CIDR", "10.70.0.0/16")
+
 app = core.App()
 
-net = NetworkingStack(app, "NetworkingStack", env=deploy_env)
+net = NetworkingStack(app, "NetworkingStack", CIDR, env=deploy_env)
 
 ec2 = EC2Stack(app, "EC2Stack", net.vpc, env=deploy_env)
 ec2.add_dependency(net)

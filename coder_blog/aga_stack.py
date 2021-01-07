@@ -25,4 +25,4 @@ class AgaStack(core.Stack):
             self, "GlobalAcceleratorSG", vpc, endpoint_group)
 
         core.CfnOutput(self, "Output",
-            value=self.accelerator.accelerator_arn)
+                       value=self.accelerator.accelerator_arn)
