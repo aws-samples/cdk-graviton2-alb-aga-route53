@@ -1,4 +1,5 @@
 from aws_cdk import (
+    aws_ec2 as ec2,
     aws_elasticloadbalancingv2 as elbv2,
     aws_elasticloadbalancingv2_targets as elbv2_targets,
     core
@@ -12,17 +13,18 @@ class ALBStack(core.Stack):
         # ALB Configuration
         self.alb = elbv2.ApplicationLoadBalancer(
             self, "ALB", vpc=vpc, internet_facing=False)
-        alb_listener = alb.add_listener(
+        self.alb_listener = self.alb.add_listener(
             "ALBListener",
             port=443,
             certificates=[domain_cert],
             open=True
         )
 
-        # Don't forget to add the ALB to the list of things the instance will talk to
-        alb_listener.add_targets(
+        self.alb_listener.add_targets(
             "CodeServerInstance",
-            port=8080, targets=[elbv2_targets.InstanceTarget(instance=host)])
+            port=8080, targets=[elbv2_targets.InstanceTarget(instance=instance, port=8080)])
+
+        self.alb.connections.allow_to(instance, ec2.Port.tcp(8080))
 
         core.CfnOutput(self, "Output",
-                       value=self.alb.id)
+                       value=self.alb.load_balancer_arn)

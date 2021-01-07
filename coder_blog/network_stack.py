@@ -13,7 +13,7 @@ class NetworkingStack(core.Stack):
         self.vpc = ec2.Vpc(
             self, "BlogVPC",
             cidr="10.70.0.0/16",
-            max_azs=2,
+            max_azs=2
         )
 
         core.CfnOutput(self, "Output",

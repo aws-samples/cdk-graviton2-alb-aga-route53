@@ -6,6 +6,7 @@ from aws_cdk import (
 
 
 class EC2Stack(core.Stack):
+
     def __init__(self, scope: core.Construct, construct_id: str, vpc, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 

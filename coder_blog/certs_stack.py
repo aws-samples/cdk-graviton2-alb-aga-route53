@@ -11,11 +11,9 @@ class CertsStack(core.Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Certs Manager
-        self.blog_hosted_zone = route53.HostedZone(
-            self, "CodeServer",
-            zone_name="aws-mclean.com")
+        self.blog_hosted_zone = route53.HostedZone.from_hosted_zone_id(self, "AlMclean Domain", hosted_zone_id="Z09031023UJOL68N69L6")
 
         self.domain_cert = acm.Certificate(
             self, "DomainCert",
             domain_name="code-server.aws-mclean.com",
-            validation=acm.CertificateValidation.from_dns(blog_hosted_zone))
+            validation=acm.CertificateValidation.from_dns(self.blog_hosted_zone))
