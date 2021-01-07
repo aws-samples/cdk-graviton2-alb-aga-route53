@@ -19,10 +19,10 @@ setuptools.setup(
     packages=setuptools.find_packages(where="coder_blog"),
 
     install_requires=[
-        "aws-cdk.core==1.82.0",
+        "aws-cdk.core==1.83.0",
     ],
 
-    python_requires=">=3.6",
+    python_requires=">=3.8",
 
     classifiers=[
         "Development Status :: 4 - Beta",
