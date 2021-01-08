@@ -10,13 +10,14 @@ class EC2Stack(core.Stack):
     def __init__(self, scope: core.Construct, construct_id: str, vpc, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # AMI
+        # Latest Amazon Linux 2 AMI for ARM
         amzn_linux = ec2.MachineImage.latest_amazon_linux(
             generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
             edition=ec2.AmazonLinuxEdition.STANDARD,
             cpu_type=ec2.AmazonLinuxCpuType.ARM_64)
 
-        # IAM Stuff
+        # Two roles, one for SSM and one with Secrets manager access.
+        # This is so that the instance can read the secret value stored in SM
         role = iam.Role(self, "InstanceSSM",
                         assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"))
         role.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name(
@@ -24,10 +25,10 @@ class EC2Stack(core.Stack):
         role.add_managed_policy(
             iam.ManagedPolicy.from_aws_managed_policy_name("SecretsManagerReadWrite"))
 
-        # Instance Type
+        # Instance Type is a t4g.large with 128GB of EBS Storage, substitute more power/storage as appropriate.
         self.instance = ec2.Instance(
             self,
-            "Workstation",
+            "CodeServerInstance",
             instance_type=ec2.InstanceType("t4g.large"),
             machine_image=amzn_linux,
             block_devices=[ec2.BlockDevice(

@@ -9,7 +9,7 @@ class NetworkingStack(core.Stack):
     def __init__(self, scope: core.Construct, construct_id: str, cidr, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # VPC - 1 AZ, 2 Subnets
+        # VPC - 2 AZs, 4 subnets (2 public, 2 private with 2 NatGateways)
         self.vpc = ec2.Vpc(
             self, "BlogVPC",
             cidr=str(cidr),
