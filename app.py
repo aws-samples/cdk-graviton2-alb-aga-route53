@@ -16,7 +16,7 @@ deploy_env = core.Environment(
 # These need to be injected at synth/deployment time
 CIDR = os.getenv("VPC_CIDR", "10.70.0.0/20")
 DOMAIN = os.getenv("R53_DOMAIN", "aws-mclean.com")
-SUB_DOMAIN = os.getenv("R53_SUBDOMAIN", "code-server")
+SUB_DOMAIN = "code-server"
 
 app = core.App()
 
