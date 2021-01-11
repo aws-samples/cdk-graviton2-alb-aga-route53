@@ -14,8 +14,8 @@ deploy_env = core.Environment(
     region=os.environ["CDK_DEFAULT_REGION"])
 
 # These need to be injected at synth/deployment time
-CIDR = os.getenv("VPC_CIDR", "10.70.0.0/20")
-DOMAIN = os.getenv("R53_DOMAIN", "aws-mclean.com")
+CIDR = os.getenv("VPC_CIDR", "")
+DOMAIN = os.getenv("R53_DOMAIN", "")
 SUB_DOMAIN = "code-server"
 
 app = core.App()

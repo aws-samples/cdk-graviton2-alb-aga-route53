@@ -4,7 +4,7 @@ if [[ $# -ge 4 ]]; then
     export CDK_DEPLOY_REGION=$2
     export R53_DOMAIN=$3
     export VPC_CIDR=$4
-    shift; shift
+    shift; shift; shift; shift
     npx cdk deploy "$@"
     exit $?
 else
