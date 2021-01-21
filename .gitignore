@@ -10,3 +10,4 @@ __pycache__
 cdk.out
 .venv
 .vscode
+cdk.context.json
