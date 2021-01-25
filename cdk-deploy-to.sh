@@ -5,7 +5,7 @@ if [[ $# -ge 4 ]]; then
     export R53_DOMAIN=$3
     export VPC_CIDR=$4
     shift; shift; shift; shift
-    npx cdk bootstrap aws://$1/$2
+    npx cdk bootstrap aws://$CDK_DEPLOY_ACCOUNT/$CDK_DEPLOY_REGION
     npx cdk deploy "$@"
     exit $?
 else
