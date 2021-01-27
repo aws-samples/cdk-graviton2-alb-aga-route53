@@ -20,20 +20,20 @@ SUB_DOMAIN = "code-server"
 
 app = core.App()
 
-net = NetworkingStack(app, "NetworkingStack", CIDR, env=deploy_env)
+net = NetworkingStack(app, "CoderBlog-NetworkingStack", CIDR, env=deploy_env)
 
-ec2 = EC2Stack(app, "EC2Stack", net.vpc, env=deploy_env)
+ec2 = EC2Stack(app, "CoderBlog-EC2Stack", net.vpc, env=deploy_env)
 ec2.add_dependency(net)
 
-cert = CertsStack(app, "CertsStack", DOMAIN, SUB_DOMAIN, env=deploy_env)
+cert = CertsStack(app, "CoderBlog-CertsStack", DOMAIN, SUB_DOMAIN, env=deploy_env)
 
-alb = ALBStack(app, "ALBStack", net.vpc, ec2.instance,
+alb = ALBStack(app, "CoderBlog-ALBStack", net.vpc, ec2.instance,
                cert.domain_cert, env=deploy_env)
 alb.add_dependency(net)
 alb.add_dependency(ec2)
 alb.add_dependency(cert)
 
-aga = AgaStack(app, "AGAStack", net.vpc, alb.alb,
+aga = AgaStack(app, "CoderBlog-AGAStack", net.vpc, alb.alb,
                cert.blog_hosted_zone, SUB_DOMAIN, env=deploy_env)
 aga.add_dependency(net)
 aga.add_dependency(cert)
