@@ -25,7 +25,8 @@ net = NetworkingStack(app, "CoderBlog-NetworkingStack", CIDR, env=deploy_env)
 ec2 = EC2Stack(app, "CoderBlog-EC2Stack", net.vpc, env=deploy_env)
 ec2.add_dependency(net)
 
-cert = CertsStack(app, "CoderBlog-CertsStack", DOMAIN, SUB_DOMAIN, env=deploy_env)
+cert = CertsStack(app, "CoderBlog-CertsStack",
+                  DOMAIN, SUB_DOMAIN, env=deploy_env)
 
 alb = ALBStack(app, "CoderBlog-ALBStack", net.vpc, ec2.instance,
                cert.domain_cert, env=deploy_env)

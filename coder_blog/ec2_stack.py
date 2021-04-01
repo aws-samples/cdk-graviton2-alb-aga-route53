@@ -4,6 +4,9 @@ from aws_cdk import (
     core
 )
 
+with open('./user_data/userdata.sh'):
+    USER_DATA = f.read()
+
 
 class EC2Stack(core.Stack):
 
@@ -37,7 +40,8 @@ class EC2Stack(core.Stack):
                     volume_size=128)
             )],
             vpc=vpc,
-            role=role
+            role=role,
+            user_data=ec2.UserData.custom(USER_DATA)
         )
 
         core.CfnOutput(self, "Output",
