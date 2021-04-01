@@ -4,7 +4,7 @@ from aws_cdk import (
     core
 )
 
-with open('./user_data/userdata.sh'):
+with open('./coder_blog/user_data/userdata.sh') as f:
     USER_DATA = f.read()
 
 
