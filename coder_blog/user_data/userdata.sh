@@ -1,5 +1,5 @@
-sudo yum update -y
-sudo yum install -y jq docker
-sudo systemctl enable docker
-sudo systemctl start docker
+yum update -y
+yum install -y jq docker
+systemctl enable docker
+systemctl start docker
 

@@ -3,6 +3,7 @@ aws-cdk.core
 aws-cdk.aws_ec2
 aws-cdk.aws_iam
 aws-cdk.aws_globalaccelerator
+aws_cdk.aws_globalaccelerator_endpoints
 aws-cdk.aws_elasticloadbalancingv2
 aws_cdk.aws_elasticloadbalancingv2-targets
 aws_cdk.aws_route53

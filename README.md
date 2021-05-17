@@ -1,58 +1,19 @@
 
-# Welcome to your CDK Python project!
+# EC2 Instance fronted by Internal ALB, AGA and Custom R53 Domain + Certificate
 
-This is a blank project for Python development with CDK.
+## Stack Components 
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+ * __./app.py__ - This is the main entry point to the stack. This file expects to find the following environment variables set prior to stack synthesis (see blog post for details) :
+   * $CDK_DEFAULT_ACCOUNT - AWS Account No.
+   * $CDK_DEFAULT_REGION - AWS Region
+   * $VPC_CIDR - CIDR of the VPC to create
+   * $R53_DOMAIN - Custom root domain (e.g. example.com)
+ * __coder_blog/networking_stack.py__ – Defines a VPC across two Availability Zones with the CIDR range of your choice. The routing and public/private subnet creation is done for us as part of the default configuration.
+ * __coder_blog/certs_stack.py__ – This stack creates a certificate for the subdomain you specify as part of the stack creation and DNS validation in Route 53.
+ * __coder_blog/ec2_stack.py__ – This defines both our AMI and the instance type and configuration. In this case, we’re using Amazon Linux 2 ARM64 edition. Here we also set the instance-managed roles that allow Session Manager connectivity and Secrets Manager access.
+ * __coder_blog/alb_stack.py__ – Here we define the internal load balancer and specify the listener, certificate, and target configuration.
+ * __coder_blog/aga_stack.py__ – The accelerator is defined here with two ports open, the ALB we defined in the ALB stack as a target, and most importantly adds in a CNAME DNS entry pointing to the DNS name of the accelerator.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+## Stack Instructions 
 
-To manually create a virtualenv on MacOS and Linux:
-
-```
-$ python3 -m venv .venv
-```
-
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
-
-```
-$ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
-
-```
-$ cdk synth
-```
-
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
-
-## Useful commands
-
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
-
-Enjoy!
+Please see AWS Blog Post: `Building an ARM64 Rust development environment using AWS Graviton2 and AWS CDK`

@@ -1,5 +1,6 @@
 from aws_cdk import (
     aws_globalaccelerator as ga,
+    aws_globalaccelerator_endpoints as ga_eps,
     aws_route53 as route53,
     aws_route53_targets as route53_targets,
     aws_elasticloadbalancingv2 as elbv2,
@@ -26,9 +27,9 @@ class AgaStack(core.Stack):
         )
         endpoint_group = ga.EndpointGroup(
             self, "MainGroup", listener=ga_listener)
-        endpoint_group.add_load_balancer("AlbEndpoint", alb)
-        aga_sg = ga.AcceleratorSecurityGroup.from_vpc(
-            self, "GlobalAcceleratorSG", vpc, endpoint_group)
+
+        endpoint_group.add_endpoint(
+            ga_eps.ApplicationLoadBalancerEndpoint(alb))
 
         # Add in a CNAME Record to our new LB based on the subdomain we created before.
         route53.CnameRecord(self, "AGA Subdomain", domain_name=self.accelerator.dns_name,
