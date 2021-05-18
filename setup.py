@@ -6,7 +6,7 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="coder_blog",
+    name="ec2_ialb_aga_custom_r53",
     version="0.0.1",
 
     description="An empty CDK Python app",
@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "coder_blog"},
-    packages=setuptools.find_packages(where="coder_blog"),
+    package_dir={"": "ec2_ialb_aga_custom_r53"},
+    packages=setuptools.find_packages(where="ec2_ialb_aga_custom_r53"),
 
     install_requires=[
         "aws-cdk.core>=1.83.0",

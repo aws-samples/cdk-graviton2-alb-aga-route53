@@ -3,11 +3,11 @@
 from aws_cdk import core
 import os
 
-from coder_blog.network_stack import NetworkingStack
-from coder_blog.aga_stack import AgaStack
-from coder_blog.alb_stack import ALBStack
-from coder_blog.certs_stack import CertsStack
-from coder_blog.ec2_stack import EC2Stack
+from ec2_ialb_aga_custom_r53.network_stack import NetworkingStack
+from ec2_ialb_aga_custom_r53.aga_stack import AgaStack
+from ec2_ialb_aga_custom_r53.alb_stack import ALBStack
+from ec2_ialb_aga_custom_r53.certs_stack import CertsStack
+from ec2_ialb_aga_custom_r53.ec2_stack import EC2Stack
 
 deploy_env = core.Environment(
     account=os.environ["CDK_DEFAULT_ACCOUNT"],

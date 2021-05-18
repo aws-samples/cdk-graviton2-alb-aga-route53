@@ -8,11 +8,11 @@
    * $CDK_DEFAULT_REGION - AWS Region
    * $VPC_CIDR - CIDR of the VPC to create
    * $R53_DOMAIN - Custom root domain (e.g. example.com)
- * __coder_blog/networking_stack.py__ – Defines a VPC across two Availability Zones with the CIDR range of your choice. The routing and public/private subnet creation is done for us as part of the default configuration.
- * __coder_blog/certs_stack.py__ – This stack creates a certificate for the subdomain you specify as part of the stack creation and DNS validation in Route 53.
- * __coder_blog/ec2_stack.py__ – This defines both our AMI and the instance type and configuration. In this case, we’re using Amazon Linux 2 ARM64 edition. Here we also set the instance-managed roles that allow Session Manager connectivity and Secrets Manager access.
- * __coder_blog/alb_stack.py__ – Here we define the internal load balancer and specify the listener, certificate, and target configuration.
- * __coder_blog/aga_stack.py__ – The accelerator is defined here with two ports open, the ALB we defined in the ALB stack as a target, and most importantly adds in a CNAME DNS entry pointing to the DNS name of the accelerator.
+ * __ec2_ialb_aga_custom_r53/networking_stack.py__ – Defines a VPC across two Availability Zones with the CIDR range of your choice. The routing and public/private subnet creation is done for us as part of the default configuration.
+ * __ec2_ialb_aga_custom_r53/certs_stack.py__ – This stack creates a certificate for the subdomain you specify as part of the stack creation and DNS validation in Route 53.
+ * __ec2_ialb_aga_custom_r53/ec2_stack.py__ – This defines both our AMI and the instance type and configuration. In this case, we’re using Amazon Linux 2 ARM64 edition. Here we also set the instance-managed roles that allow Session Manager connectivity and Secrets Manager access.
+ * __ec2_ialb_aga_custom_r53/alb_stack.py__ – Here we define the internal load balancer and specify the listener, certificate, and target configuration.
+ * __ec2_ialb_aga_custom_r53/aga_stack.py__ – The accelerator is defined here with two ports open, the ALB we defined in the ALB stack as a target, and most importantly adds in a CNAME DNS entry pointing to the DNS name of the accelerator.
 
 ## Stack Instructions 
 
