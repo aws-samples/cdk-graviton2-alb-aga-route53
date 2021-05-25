@@ -17,7 +17,8 @@ class ALBStack(core.Stack):
             "ALBListener",
             port=443,
             certificates=[domain_cert],
-            open=True
+            open=True,
+            ssl_policy=elbv2.SslPolicy.FORWARD_SECRECY_TLS12
         )
 
         # Allow connections on the instance Security Group from the ALB.
