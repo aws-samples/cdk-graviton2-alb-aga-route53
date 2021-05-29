@@ -1,4 +1,3 @@
-
 # EC2 Instance fronted by Internal ALB, AGA and Custom R53 Domain + Certificate
 
 ## Stack Components 
@@ -17,3 +16,11 @@
 ## Stack Instructions 
 
 Please see AWS Blog Post: `Building an ARM64 Rust development environment using AWS Graviton2 and AWS CDK`
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
