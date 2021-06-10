@@ -15,7 +15,7 @@
 
 ## Stack Instructions 
 
-Please see AWS Blog Post: `Building an ARM64 Rust development environment using AWS Graviton2 and AWS CDK`
+Please see AWS Blog Post: [Building an ARM64 Rust development environment using AWS Graviton2 and AWS CDK](https://aws.amazon.com/blogs/devops/building-an-arm64-rust-development-environment-using-aws-graviton2-and-aws-cdk/)
 
 ## Security
 
